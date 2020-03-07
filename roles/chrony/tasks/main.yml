@@ -11,7 +11,7 @@
 - name: update chrony configurations
   template:
     src: templates/chrony.conf.j2
-    dest: /etc/
+    dest: /etc/chrony.conf
     owner: root
     group: root
     mode: 0644
