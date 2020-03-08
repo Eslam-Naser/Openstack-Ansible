@@ -6,10 +6,11 @@
     name: "{{ mariadb_service_name }}"
     state: restarted
 
-- name: Start Memcached Service
+- name: Restart Memcached Service
   service:
     name: "{{ memcached_service_name }}"
     state: restarted
+
 
 
 

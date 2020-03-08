@@ -43,9 +43,9 @@
     state: latest
   with_items: "{{ mariadb_packages_name }}"
 
-- name: File => /etc/my.cnf.d/openstack.cnf
+- name: Update File => /etc/my.cnf.d/openstack.cnf
   template:
-    src: templates/openstack.cnf
+    src: templates/openstack.cnf.j2
     dest: /etc/my.cnf.d/openstack.cnf
   notify: Restart Mariadb Service
 
