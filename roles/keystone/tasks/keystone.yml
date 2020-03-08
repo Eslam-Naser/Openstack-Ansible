@@ -1,0 +1,49 @@
+---
+# tasks for keystone
+
+- name: Create 'keystone' database
+  mysql_db:
+    login_user: root
+    login_password: "{{ mariadb_root_pwd }}"
+    name: keystone
+    state: present
+#   login_host: "{{ db_host }}"
+
+- name: Create database user 'keystone@localhost' with keystone database privileges
+  mysql_user:
+    login_user: root
+    login_password: "{{ mariadb_root_pwd }}"
+    name: keystone
+    host: localhost
+    password: "{{ keystone_mysql_pwd }}"
+    priv: 'keystone.*:ALL'
+    update_password: on_create
+    state: present
+#   login_host: "{{ db_host }}"
+
+
+- name: Create database user 'keystone@%' with keystone database privileges
+  mysql_user:
+    login_user: root
+    login_password: "{{ mariadb_root_pwd }}"
+    name: keystone
+    host: '%'
+    password: "{{ keystone_mysql_pwd }}"
+    priv: 'keystone.*:ALL'
+    update_password: on_create
+    state: present
+#   login_host: "{{ db_host }}"
+
+## validate
+# SHOW GRANTS FOR 'keystone'@'localhost';
+# SHOW GRANTS FOR 'keystone'@'%';
+
+- name: Install keystone Packages
+  yum:
+    name: "{{ item }}"
+    state: installed
+  with_items: "{{ keystone_packages_name }}"
+
+# https://docs.openstack.org/keystone/train/install/keystone-install-rdo.html
+# - /etc/keystone/keystone.conf
+

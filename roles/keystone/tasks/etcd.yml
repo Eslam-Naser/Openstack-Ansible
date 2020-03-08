@@ -1,6 +1,21 @@
 ---
 # tasks for etcd
 
+- name: Install Etcd
+  yum:
+    name: "{{ etcd_package_name }}"
+    state: installed
 
+- name: Update File => /etc/etcd/etcd.conf
+  template:
+    src: templates/etcd.conf.j2
+    dest: /etc/etcd/etcd.conf
+  notify: Restart Etcd Service
+
+- name: Start Etcd Service
+  service:
+    name: "{{ etcd_service_name }}"
+    state: started
+    enabled: true
 
 

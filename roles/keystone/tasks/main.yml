@@ -63,5 +63,7 @@
 - include_tasks: mariadb_secure_installation.yml
 - include_tasks: message_queue.yml
 - include_tasks: memcached.yml
+- include_tasks: etcd.yml
+- include_tasks: keystone.yml
 
 
