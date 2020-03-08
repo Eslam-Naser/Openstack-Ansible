@@ -19,5 +19,5 @@
 - name: restart chrony service
   service:
     name: "{{ chrony_service_name  }}"
-    state: "{{ chrony_service_state }} "
+    state: "{{ chrony_service_state }}"
     enabled: yes
