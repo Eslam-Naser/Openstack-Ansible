@@ -1,0 +1,25 @@
+---
+# message_queue tasks
+
+- name: Install Message queue
+  yum:
+    name: "{{ message_queue_package_name }}"
+    state: installed
+
+- name: Start Message queue service
+  service:
+    name: "{{ message_queue_service_name }}"
+    state: started
+    enabled: true
+
+- name: Add the openstack user to the Message queue
+  rabbitmq_user:
+    user: "{{ rabbitmq_user }}"
+    password: "{{ rabbitmq_pwd }}"
+    permissions:
+    - vhost: /
+      configure_priv: .*
+      read_priv: .*
+      write_priv: .*
+    state: present
+

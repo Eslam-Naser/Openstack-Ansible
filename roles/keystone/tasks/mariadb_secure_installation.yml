@@ -1,0 +1,26 @@
+---
+
+- name: Delete anonymous MySQL server user for {{ ansible_nodename }}
+  mysql_user: login_user=root
+              login_password='{{ mariadb_root_pwd }}'
+              check_implicit_admin=yes
+              user=""
+              host={{ item }}
+              state="absent"
+  with_items:
+   - ""
+   - "{{ ansible_nodename }}"
+   - localhost
+
+- name: Set root Password
+  mysql_user: login_password={{ mariadb_root_pwd }} check_implicit_admin=yes name=root host={{ item }} password={{ mariadb_root_pwd }} state=present priv='*.*:ALL,GRANT'
+  with_items:
+    - localhost
+    - 127.0.0.1
+    - ::1
+    - "{{ ansible_nodename }}"
+
+# will be continued later
+
+- name: remove the MySQL test database
+  action: mysql_db login_user=root login_password="{{ mariadb_root_pwd }}" db=test state=absent

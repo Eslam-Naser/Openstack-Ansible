@@ -15,8 +15,10 @@
     owner: root
     group: root
     mode: 0644
+  notify:
+    - restart chronyd service
 
-- name: restart chrony service
+- name: start chrony service
   service:
     name: "{{ chrony_service_name  }}"
     state: "{{ chrony_service_state }}"

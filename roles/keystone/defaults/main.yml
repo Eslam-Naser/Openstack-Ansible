@@ -1,0 +1,23 @@
+---
+# defaults file for keystone
+
+openstack_release_package_name: centos-release-openstack-train
+mariadb_packages_name:
+  - mariadb
+  - mariadb-server
+  - python2-PyMySQL
+mariadb_service_name: mariadb
+mariadb_root_pwd: 'password22'
+
+message_queue_package_name: rabbitmq-server
+message_queue_service_name: rabbitmq-server.service
+
+rabbitmq_user: openstack
+rabbitmq_pwd: 'password1'
+
+memcached_package_name:
+  - memcached
+  - python-memcached
+memcached_service_name: memcached.service
+
+

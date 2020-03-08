@@ -1,0 +1,16 @@
+---
+# handlers file for keystone
+
+- name: Restart Mariadb Service
+  service:
+    name: "{{ mariadb_service_name }}"
+    state: restarted
+
+- name: Start Memcached Service
+  service:
+    name: "{{ memcached_service_name }}"
+    state: restarted
+
+
+
+

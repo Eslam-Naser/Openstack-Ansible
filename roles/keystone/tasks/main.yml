@@ -1,0 +1,67 @@
+---
+# tasks file for keystone
+
+
+- name: Install Openstack release package -> "{{ openstack_release_package_name }}"
+  yum:
+    name: "{{ openstack_release_package_name }}"
+    state: installed
+
+- name: Copy RDO RPM file
+  copy:
+     src: https://rdoproject.org/repos/rdo-release.rpm
+     dest: /tmp/rdo.rpm
+  when: ansible_distribution == 'Red Hat Enterprise Linux'
+
+- name: Install RDO RPM for RedHat
+  yum:
+     name: /tmp/rdo.rpm
+     state: latest
+  when: ansible_distribution == 'Red Hat Enterprise Linux'
+
+# gives an Error
+#- name: Update yum cache
+#  yum:
+#    update_cache: yes
+
+- name: Upgrade all packages
+  yum: name=* state=latest
+
+- name: Install the OpenStack client
+  yum:
+    name: python-openstackclient
+    state: latest
+
+- name: Install openstack-selinux
+  yum:
+    name: openstack-selinux
+    state: latest
+
+- name: Install Mariadb
+  yum:
+    name: "{{ item }}"
+    state: latest
+  with_items: "{{ mariadb_packages_name }}"
+
+- name: File => /etc/my.cnf.d/openstack.cnf
+  template:
+    src: templates/openstack.cnf
+    dest: /etc/my.cnf.d/openstack.cnf
+  notify: Restart Mariadb Service
+
+- name: Start Mariadb Service
+  service:
+    name: "{{ mariadb_service_name }}"
+    state: started
+    enabled: true
+
+
+- name: Install python-mysqldb for Ansible
+  yum: name=MySQL-python state=present
+  when: ansible_os_family == 'RedHat'
+
+- include_tasks: mariadb_secure_installation.yml
+- include_tasks: message_queue.yml
+- include_tasks: memcached.yml
+
+
