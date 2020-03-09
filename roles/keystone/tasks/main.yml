@@ -75,4 +75,9 @@
 - include_tasks: keystone_populate.yml
   when: (keystone_tables_test.rc) == 1
 
+- include_tasks: keystone_finalize.yml
+
+# Next
+# https://docs.openstack.org/keystone/train/install/keystone-users-rdo.html
+
 

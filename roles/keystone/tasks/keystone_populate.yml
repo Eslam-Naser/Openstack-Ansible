@@ -14,13 +14,17 @@
   shell: "keystone-manage credential_setup --keystone-user keystone --keystone-group keystone"
   become: yes
 
-#- name: test
-#  shell: |
-#    keystone-manage bootstrap --bootstrap-password ADMIN_PASS \
-#      --bootstrap-admin-url http://controller:5000/v3/ \
-#      --bootstrap-internal-url http://controller:5000/v3/ \
-#      --bootstrap-public-url http://controller:5000/v3/ \
-#      --bootstrap-region-id RegionOne
-#  become: yes
+- name: Bootstrap Keystone
+  shell: |
+    keystone-manage bootstrap --bootstrap-password {{ openstack_admin_password }} \
+      --bootstrap-admin-url http://{{ ansible_hostname }}:5000/v3/ \
+      --bootstrap-internal-url http://{{ ansible_hostname }}:5000/v3/ \
+      --bootstrap-public-url http://{{ ansible_hostname }}:5000/v3/ \
+      --bootstrap-region-id RegionOne
+  become: yes
 
 # https://docs.openstack.org/keystone/train/install/keystone-install-rdo.html
+
+
+
+

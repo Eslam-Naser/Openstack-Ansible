@@ -1,0 +1,28 @@
+---
+# tasks to finishing installing keystone
+
+- name: Create a symbolic link ( /usr/share/keystone/wsgi-keystone.conf --> /etc/httpd/conf.d/ )
+  file:
+    src: /usr/share/keystone/wsgi-keystone.conf
+    dest: /etc/httpd/conf.d/wsgi-keystone.conf
+    state: link
+
+- name: Update File => /etc/httpd/conf/httpd.conf
+  template:
+    src: templates/httpd.conf.j2
+    dest: /etc/httpd/conf/httpd.conf
+  notify: Restart http Service
+
+### Validate ###
+
+#export OS_USERNAME=admin
+#export OS_PASSWORD=password1234
+#export OS_PROJECT_NAME=admin
+#export OS_USER_DOMAIN_NAME=Default
+#export OS_PROJECT_DOMAIN_NAME=Default
+#export OS_AUTH_URL=http://controller:5000/v3
+#export OS_IDENTITY_API_VERSION=3
+
+# openstack user list
+# openstack user show admin
+

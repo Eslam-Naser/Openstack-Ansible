@@ -61,3 +61,4 @@
     src: templates/keystone.conf.j2
     dest: /etc/keystone/keystone.conf
   notify: Restart http Service
+
