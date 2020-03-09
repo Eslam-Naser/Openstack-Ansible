@@ -1,0 +1,26 @@
+---
+# tasks for populating keystone database & configuring keystone
+
+- name: Populate the Keystone database
+  shell: 'su -s /bin/sh -c "keystone-manage db_sync" keystone'
+  become: yes
+  #when: (keystone_tables_test.stdout) == false
+
+- name: keystone-manage fernet_setup
+  shell: "keystone-manage fernet_setup --keystone-user keystone --keystone-group keystone"
+  become: yes
+
+- name: keystone-manage credential_setup
+  shell: "keystone-manage credential_setup --keystone-user keystone --keystone-group keystone"
+  become: yes
+
+#- name: test
+#  shell: |
+#    keystone-manage bootstrap --bootstrap-password ADMIN_PASS \
+#      --bootstrap-admin-url http://controller:5000/v3/ \
+#      --bootstrap-internal-url http://controller:5000/v3/ \
+#      --bootstrap-public-url http://controller:5000/v3/ \
+#      --bootstrap-region-id RegionOne
+#  become: yes
+
+# https://docs.openstack.org/keystone/train/install/keystone-install-rdo.html

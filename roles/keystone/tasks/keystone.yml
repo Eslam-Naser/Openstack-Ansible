@@ -1,5 +1,5 @@
 ---
-# tasks for keystone
+# tasks for Installing keystone
 
 - name: Create 'keystone' database
   mysql_db:
@@ -34,6 +34,18 @@
     state: present
 #   login_host: "{{ db_host }}"
 
+- name: Create database user 'keystone@{{ ansible_fqdn }}' with keystone database privileges
+  mysql_user:
+    login_user: root
+    login_password: "{{ mariadb_root_pwd }}"
+    name: keystone
+    host: "{{ ansible_fqdn }}"
+    password: "{{ keystone_mysql_pwd }}"
+    priv: 'keystone.*:ALL'
+    update_password: on_create
+    state: present
+#   login_host: "{{ db_host }}"
+
 ## validate
 # SHOW GRANTS FOR 'keystone'@'localhost';
 # SHOW GRANTS FOR 'keystone'@'%';
@@ -44,6 +56,8 @@
     state: installed
   with_items: "{{ keystone_packages_name }}"
 
-# https://docs.openstack.org/keystone/train/install/keystone-install-rdo.html
-# - /etc/keystone/keystone.conf
-
+- name: Update File => /etc/keystone/keystone.conf
+  template:
+    src: templates/keystone.conf.j2
+    dest: /etc/keystone/keystone.conf
+  notify: Restart http Service

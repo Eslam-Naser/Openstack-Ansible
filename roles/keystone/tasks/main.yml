@@ -66,4 +66,13 @@
 - include_tasks: etcd.yml
 - include_tasks: keystone.yml
 
+- name: Validate keystone tables
+  shell: "mysql -u root -p{{ mariadb_root_pwd }} keystone -e 'show tables;' | grep 'token'"
+  register: keystone_tables_test
+  ignore_errors: yes
+  no_log: True
+
+- include_tasks: keystone_populate.yml
+  when: (keystone_tables_test.rc) == 1
+
 
