@@ -11,7 +11,15 @@
     name: "{{ memcached_service_name }}"
     state: restarted
 
+- name: Restart Etcd Service
+  service:
+    name: "{{ etcd_service_name }}"
+    state: restarted
 
+- name: Restart http Service
+  service:
+    name: "{{ http_service_name }}"
+    state: restarted
 
 
 

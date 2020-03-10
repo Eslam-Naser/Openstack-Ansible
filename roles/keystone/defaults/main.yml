@@ -20,4 +20,20 @@ memcached_package_name:
   - python-memcached
 memcached_service_name: memcached.service
 
+etcd_package_name: etcd
+etcd_service_name: etcd
+etcd_name: controller
+
+keystone_mysql_pwd: password123
+keystone_packages_name:
+  - openstack-keystone
+  - httpd
+  - mod_wsgi
+
+http_service_name: httpd
+
+#openstack_admin_user: admin
+openstack_admin_password: password1234
+
+
 

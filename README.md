@@ -1,6 +1,5 @@
 
 #  Openstack-Ansible
 
-* Set modules to deploy Openstack with clear installation
-
+* Packstack alternative to deoploy Openstack for testing environments without Errors.
 
