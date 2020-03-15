@@ -1,26 +1,50 @@
 ---
 
-- name: Delete anonymous MySQL server user for {{ ansible_nodename }}
-  mysql_user: login_user=root
-              login_password='{{ mariadb_root_pwd }}'
-              check_implicit_admin=yes
-              user=""
-              host={{ item }}
-              state="absent"
-  with_items:
-   - ""
-   - "{{ ansible_nodename }}"
-   - localhost
+- name: mysql_secure_installation
+  mysql_secure_installation:
+    login_password: ''
+    new_password: "{{ mariadb_root_pwd }}"
+    user: root
+    login_host: localhost
+    hosts: ['localhost', '127.0.0.1', '::1']
+    change_root_password: true
+    remove_anonymous_user: true
+    disallow_root_login_remotely: true
+    remove_test_db: true
+  register: mysql_secure
 
-- name: Set root Password
-  mysql_user: login_password={{ mariadb_root_pwd }} check_implicit_admin=yes name=root host={{ item }} password={{ mariadb_root_pwd }} state=present priv='*.*:ALL,GRANT'
-  with_items:
-    - localhost
-    - 127.0.0.1
-    - ::1
-    - "{{ ansible_nodename }}"
+  # To see detailed output
+- debug:
+    var: mysql_secure
+
+#######################################################
+### The below code is overridden by the Above code  ###
+#######################################################
+
+
+#- name: Delete anonymous MySQL server user for {{ ansible_nodename }}
+#  mysql_user: login_user=root
+#              login_password='{{ mariadb_root_pwd }}'
+#              check_implicit_admin=yes
+#              user=""
+#              host={{ item }}
+#              state="absent"
+#  with_items:
+#   - ""
+#   - "{{ ansible_nodename }}"
+#   - localhost
+#
+#- name: Set root Password
+#  mysql_user: login_password={{ mariadb_root_pwd }} check_implicit_admin=yes name=root host={{ item }} password={{ mariadb_root_pwd }} state=present priv='*.*:ALL,GRANT'
+#  with_items:
+#    - localhost
+#    - 127.0.0.1
+#    - ::1
+#    - "{{ ansible_nodename }}"
 
 # will be continued later
 
-- name: remove the MySQL test database
-  action: mysql_db login_user=root login_password="{{ mariadb_root_pwd }}" db=test state=absent
+#- name: remove the MySQL test database
+#  action: mysql_db login_user=root login_password="{{ mariadb_root_pwd }}" db=test state=absent
+
+
